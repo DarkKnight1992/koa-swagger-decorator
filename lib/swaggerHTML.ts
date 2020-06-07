@@ -10,12 +10,14 @@ function parseSimpleConfig(config: {[name: string]: any} = {}) {
     }).join('\n\t  ');
 }
 
-const swaggerHTML = (apiPath: string, options: { swaggerVersion?: string, [name: string]: any } = {}) => {
+const swaggerHTML = (apiPath: string, options: { ui?: string, swaggerVersion?: string, [name: string]: any } = {}) => {
     const {
-        swaggerVersion = '3.21.0',
-        display = {},
+      swaggerVersion = '3.21.0',
+      display = {},
+      ui,
     } = options;
-  const result = `
+
+  const result = ui ? ui : `
 
 <!DOCTYPE html>
 <html lang="en">
@@ -80,7 +82,6 @@ const swaggerHTML = (apiPath: string, options: { swaggerVersion?: string, [name:
 
     </defs>
   </svg>
-
   <div id="swagger-ui"></div>
   <script src="//cdnjs.cloudflare.com/ajax/libs/swagger-ui/${swaggerVersion}/swagger-ui-bundle.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/swagger-ui/${swaggerVersion}/swagger-ui-standalone-preset.js"></script>

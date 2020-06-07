@@ -13,6 +13,7 @@ const app = new Koa();
 app
   .use(cors())
   .use(serve('.'))
+  .use(serve(__dirname))
   .use(bodyParser())
   .use(errorHandle())
   .use(router.routes())
