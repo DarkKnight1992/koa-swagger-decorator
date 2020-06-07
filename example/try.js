@@ -6,7 +6,6 @@ function seriesLoadScriptsCss(scripts, callback) {
   var s = new Array(),
     last = scripts.length - 1,
     recursiveLoad = function(i) {
-      // 递归
       s[i] = document.createElement('script');
       s[i].setAttribute('type', 'text/javascript');
       s[i].onload = s[i].onreadystatechange = function() {
@@ -95,9 +94,9 @@ function getAbsolutePosition(domObj) {
 function initTry(userCfg) {
   seriesLoadScriptsCss(
     [
-      'cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js',
-      'cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js',
-      'unpkg.com/swagger-ui-dist@3.25.1/swagger-ui-bundle.js'
+      '//cdn.jsdelivr.net/npm/jquery@3.2.1/dist/jquery.min.js',
+      '//cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js',
+      '//unpkg.com/swagger-ui-dist@3.25.1/swagger-ui-bundle.js'
     ],
     () => {
       const cfg = {
@@ -115,6 +114,50 @@ function initTry(userCfg) {
 }
 
 function initSwagger(cfg) {
+  $('head').append(`
+  <style>
+    body .swagger-ui .wrapper {
+      padding: 0;
+    }
+    body .swagger-ui .opblock.opblock-get .opblock-summary {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    body {
+      position: relative;
+    }
+    @media print, screen and (max-width: 85rem) {
+      .dtUibw {
+        padding: 4px;
+      }
+    }
+    .swaggerBox {
+      border-radius: 4px;
+      background-color: #fff;
+      width: 100%;
+      height: 100vh;
+      overflow: hidden;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+    }
+    .hide {
+      visibility: hidden;
+      cursor: none;
+      width: 0;
+      height: 0;
+    }
+    .show {
+      visibility: visible;
+      cursor: initial;
+    }
+    .tryBtn {
+      margin-right: 10px;
+      background-color: #fff;
+    }
+  </style>
+`);
   // dom
   $('body').append(`
     <div class="swaggerBox">
@@ -123,7 +166,8 @@ function initSwagger(cfg) {
   `);
   // swagger-ui.css
   $('head').append(
-    '<link href="unpkg.com/swagger-ui-dist@3.25.1/swagger-ui.css" rel="stylesheet" type="text/css" />'
+    // '<link href="//unpkg.com/swagger-ui-dist@3.25.1/swagger-ui.css" rel="stylesheet" type="text/css" />'
+    '<link href="//unpkg.com/swagger-ui-dist@3.21.0/swagger-ui.css" rel="stylesheet" type="text/css" />'
   );
   SwaggerUIBundle({
     url: cfg.openApi,
@@ -136,51 +180,6 @@ function initSwagger(cfg) {
 
 function initTryOk(cfg) {
   // reset swagger-ui css
-  $('head').append(`
-    <style>
-      body .swagger-ui .wrapper {
-        padding: 0;
-      }
-      body .swagger-ui .opblock.opblock-get .opblock-summary {
-        cursor: not-allowed;
-        pointer-events: none;
-      }
-      /* 以 body 为相对元素, 设置 swaggerBox 的位置 */
-      body {
-        position: relative;
-      }
-      @media print, screen and (max-width: 85rem) {
-        .dtUibw {
-          padding: 4px;
-        }
-      }
-      .swaggerBox {
-        border-radius: 4px;
-        background-color: #fff;
-        width: 100%;
-        height: 100vh;
-        overflow: hidden;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: 1;
-      }
-      .hide {
-        visibility: hidden;
-        cursor: none;
-        width: 0;
-        height: 0;
-      }
-      .show {
-        visibility: visible;
-        cursor: initial;
-      }
-      .tryBtn {
-        margin-right: 10px;
-        background-color: #fff;
-      }
-    </style>
-  `);
 
   const openApi = cfg.openApi;
   Redoc.init(
@@ -199,14 +198,13 @@ function initTryOk(cfg) {
 
 function trySwagger(cfg) {
   cfg = {
-    tryText: 'try', // 尝试按钮的文本
-    trySwaggerInApi: true, // 是否把 swagger 调试窗口显示在 api 下面? true: 是, false: 显示在 Request 后面, 当 Request 比较大时可能看不到调试窗口了
+    tryText: 'try',
+    trySwaggerInApi: true,
     ...cfg
   };
 
-  // 添加尝试按钮
   $('.http-verb').before(`
-    <button class="tryBtn">${cfg.tryText}</button>
+    <button class="tryBtn try-out__btn">${cfg.tryText}</button>
   `);
   $('.tryBtn').click(function(event) {
     event.stopPropagation();
@@ -247,18 +245,15 @@ function trySwagger(cfg) {
       }
     }
 
-    // 获取点击的 method 和 api
     const fullApi = $('.try .fullApi')
       .text()
       .replace(cfg.tryText, '')
       .trim();
     const [, method, api] = fullApi.match(/(\w+)(.*)/);
 
-    // 获取 swaggerShadow 的位置
     let pos = {};
     pos = getAbsolutePosition($('.try .swaggerShadow')[0]);
     pos = Object.keys(pos).reduce((prev, cur, index) => {
-      // 给没有单位的数字添加 px, 数字为 0 时为 undefined
       const val = pos[cur];
       return {
         ...prev,
@@ -269,7 +264,6 @@ function trySwagger(cfg) {
 
     let oldHeight = pos.height ? `${pos.height}` : undefined;
 
-    // 移动 swagger 到 swaggerShadow 的位置
     const getSwaggerBoxHeight = () =>
       `${getAbsolutePosition($('.swaggerBox')[0]).height}px`;
     $('.swaggerBox')
@@ -277,34 +271,33 @@ function trySwagger(cfg) {
         left: `${pos.left}`,
         top: `${pos.top}`,
         width: `${pos.width}`,
-        height: oldHeight
+        height: oldHeight,
+        position: 'absolute',
+        zIndex: 1,
+        background: '#fff',
+        overflow: 'hidden'
       })
       .removeClass('hide')
       .addClass('show');
 
-    // 同步 swaggerShadow 的大小, 让它与 swaggerBox 一样大
     $('.swaggerShadow').css({
-      height: getSwaggerBoxHeight()
+      // height: getSwaggerBoxHeight()
     });
 
-    // 滚动 swagger 视图到相同的 api 位置
     const selStr = `.opblock-summary-${method} [data-path="${api}"]`;
     const $swaggerApiDom = $(selStr);
-    const $opblock = $swaggerApiDom.parents('.opblock'); // 获取当前点击的 swagger api, 并且不是展开状态的元素
+    const $opblock = $swaggerApiDom.parents('.opblock');
     if ($opblock.hasClass('open') === false) {
-      $swaggerApiDom.click(); // 打开
+      $swaggerApiDom.click();
     }
     $opblock.addClass('open');
-    console.log('selStr', selStr);
-    $('.swaggerBox').scrollTo($swaggerApiDom.parent());
-    // 一些 dom 改变事件, 当用户操作 swagger api, 例如点击 `try it out` 的时候, 重新获取高度, 并同步到 swaggerBox 和 swaggerShadow
     const domChange =
       'DOMAttrModified DOMAttributeNameChanged DOMCharacterDataModified DOMElementNameChanged DOMNodeInserted DOMNodeInsertedIntoDocument DOMNodeRemoved DOMNodeRemovedFromDocument DOMSubtreeModified';
-    $('.opblock').off(domChange); // 监听前先取消所有类似元素的监听, 避免多于的监听造成卡顿
-    function changeFn() {
+    $('.opblock').off(domChange);
+    function changeFn(force) {
       const pos = getAbsolutePosition($opblock[0]);
       if (pos.height === 0) {
-        return false; // 高度为 0 则不进行处理
+        return false;
       }
       const newHeight = `${pos.height}px`;
       if (oldHeight !== newHeight) {
@@ -312,17 +305,19 @@ function trySwagger(cfg) {
         $('.swaggerBox').css({
           height: newHeight
         });
-        $('.swaggerShadow').css({
-          height: getSwaggerBoxHeight()
-        });
+        // $('.swaggerShadow').css({
+        //   height: getSwaggerBoxHeight()
+        // });
         oldHeight = newHeight;
       }
     }
-    setTimeout(changeFn, 500); // 如果没有 dom 改变, 那也执行, 在 500 毫秒(等待样式展示)之后
+    setTimeout(changeFn(true), 500);
+    setTimeout(() => {
+      changeFn(true);
+    });
     $opblock.on(domChange, debounce(changeFn, 100));
   });
 
-  // 当改变浏览器窗口大小时, 重置 swaggerBox 的状态
   $(window).resize(
     debounce(() => {
       $('.swaggerBox')
