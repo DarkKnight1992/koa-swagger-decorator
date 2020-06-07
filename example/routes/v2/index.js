@@ -1,18 +1,10 @@
-import fs from 'fs';
-import path from 'path';
 import { SwaggerRouter } from '../../../dist';
-
-const swaggerHtml = path.resolve(__dirname, '../../swagger-ui/index.html');
-const swaggerUI = fs.readFileSync(swaggerHtml).toString('utf8');
 
 const koaRouterOpts = { prefix: '/api/v2' };
 const swaggerRouterOpts = {
   title: 'API V2 Server',
   description: 'API DOC',
-  version: '1.0.0',
-  swaggerConfiguration: {
-    ui: swaggerUI
-  }
+  version: '1.0.0'
 };
 const router = new SwaggerRouter(koaRouterOpts, swaggerRouterOpts);
 
