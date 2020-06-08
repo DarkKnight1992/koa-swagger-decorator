@@ -4,7 +4,6 @@
   "description": "using decorator to automatically generate swagger doc for koa-router",
   "main": "dist/index.js",
   "dependencies": {
-    "@koa/cors": "^3.1.0",
     "@types/globby": "^8.0.0",
     "@types/koa-router": "^7.0.31",
     "@types/ramda": "^0.25.36",
@@ -41,6 +40,7 @@
     "intelli-espower-loader": "^1.0.1",
     "koa": "^2.5.2",
     "koa-bodyparser": "^4.2.1",
+    "koa-cors": "^0.0.16",
     "koa-multer": "^1.0.2",
     "koa-static": "^4.0.3",
     "lodash": "^4.17.10",
@@ -74,6 +74,11 @@
     "precommit-msg": "echo 'Pre-commit code formating...' && exit 0",
     "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
+  "pre-commit": [
+    "precommit-msg",
+    "format",
+    "add"
+  ],
   "keywords": [
     "decorator",
     "swagger",
