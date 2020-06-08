@@ -61,47 +61,6 @@ const swaggerUI = `
     redoc {
       display: block;
     }
-    .hide {
-      display: none;
-    }
-    .show {
-      display: block;
-    }
-    .swagger-ui * {
-      flex-wrap: wrap;
-    }
-    .try-out__btn {
-      margin: 0 5px !important;
-      padding: 0 !important;
-      border-radius: 500px;
-      overflow: hidden;
-      width: 26px;
-      height: 26px;
-      background: #183647;
-      border: 0;
-      border: 2px solid #183647;
-      box-sizing: border-box;
-      cursor: pointer;
-
-    }
-    .try-out__btn:focus {
-      outline: 0;
-    }
-    .try-out__btn img {
-      display: block;
-      position: relative;
-      width: 26px;
-      height: 26px;
-      left: -2px;
-      top: -2px;
-    }
-    .swagger-ui table, .swagger-ui table tr, .swagger-ui table tr td {
-      display: block;
-    }
-    .swagger-ui span, .swagger-ui label {
-      display: block !important;
-      width: 100%;
-    }
   </style>
   <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400,700|Roboto:300,400,700" rel="stylesheet">
 </head>
@@ -112,6 +71,9 @@ const swaggerUI = `
 
   <script src="/redoc.standalone.js"> </script>
   <script src="/try.js"></script>
+  <script>
+  console.log("redoc", window.Redoc)
+</script>
   <script>
     initTry({
       openApi: '//petstore.swagger.io/v2/swagger.json',

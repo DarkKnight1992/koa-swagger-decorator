@@ -142,25 +142,56 @@ function initSwagger(cfg) {
       left: 0;
       z-index: 1;
     }
-    .hide {
-      visibility: hidden;
-      cursor: none;
-      width: 0;
-      height: 0;
-    }
-    .show {
-      visibility: visible;
-      cursor: initial;
-    }
     .tryBtn {
       margin-right: 10px;
       background-color: #fff;
+    }
+    .hide {
+      display: none;
+    }
+    .show {
+      display: block;
+    }
+    .swagger-ui * {
+      flex-wrap: wrap;
+    }
+    .try-out-swagger {
+      margin: 0 5px !important;
+      padding: 0 !important;
+      border-radius: 500px;
+      overflow: hidden;
+      width: 26px;
+      height: 26px;
+      background: #183647;
+      border: 0;
+      border: 2px solid #183647;
+      box-sizing: border-box;
+      cursor: pointer;
+
+    }
+    .try-out-swagger:focus {
+      outline: 0;
+    }
+    .try-out-swagger img {
+      display: block;
+      position: relative;
+      width: 26px;
+      height: 26px;
+      left: -2px;
+      top: -2px;
+    }
+    .swagger-ui table, .swagger-ui table tr, .swagger-ui table tr td {
+      display: block;
+    }
+    .swagger-ui span, .swagger-ui label {
+      display: block !important;
+      width: 100%;
     }
   </style>
 `);
   // dom
   $('body').append(`
-    <div class="swaggerBox">
+    <div class="swaggerBox hide">
       <div id="swagger-ui"></div>
     </div>
   `);
@@ -204,7 +235,7 @@ function trySwagger(cfg) {
   };
 
   $('.http-verb').before(`
-    <button class="tryBtn try-out__btn">${cfg.tryText}</button>
+    <button class="tryBtn try-out-swagger">${cfg.tryText}</button>
   `);
   $('.tryBtn').click(function(event) {
     event.stopPropagation();
