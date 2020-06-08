@@ -19,6 +19,7 @@ export interface SwaggerDisplayConfiguration {
     showCommonExtensions?: boolean;
 }
 export interface SwaggerConfiguration {
+    ui?: string;
     display?: SwaggerDisplayConfiguration;
 }
 export interface SwaggerOptions {

@@ -54,6 +54,7 @@ export interface SwaggerDisplayConfiguration {
 }
 
 export interface SwaggerConfiguration {
+  ui?: string;
   display?: SwaggerDisplayConfiguration;
 }
 

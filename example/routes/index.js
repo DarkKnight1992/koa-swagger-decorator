@@ -110,7 +110,7 @@ const swaggerUI = `
   <redoc id="redoc-container" spec-url="http://localhost:8081/swagger-json"> </redoc>
 
 
-  <script src="http://127.0.0.1:8887/bundles/redoc.standalone.js"> </script>
+  <script src="/redoc.standalone.js"> </script>
   <script src="/try.js"></script>
   <script>
     initTry({

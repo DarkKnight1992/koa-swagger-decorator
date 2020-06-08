@@ -74,11 +74,7 @@
     "precommit-msg": "echo 'Pre-commit code formating...' && exit 0",
     "tslint": "tslint -c tslint.json -p tsconfig.json"
   },
-  "pre-commit": [
-    "precommit-msg",
-    "format",
-    "add"
-  ],
+
   "keywords": [
     "decorator",
     "swagger",
